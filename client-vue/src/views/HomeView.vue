@@ -3,13 +3,13 @@
         <h3 class="mt-5 ms-5">Products</h3>
     </div>
     <div class="bg-light d-flex flex-wrap">
-        <div v-for="(product) in inventory" :key="product.id" class="">
+        <div v-for="(product, i) in inventory" :key="product.id" class="">
             <div class="me-3 ms-4 mt-3 pb-4 bg-white">
                 <div class="pt-2 pe-2 d-flex justify-content-end">
                     <router-link :to="'/product-edit/' + product.id">
                         <img src="../../public/svg/edit.svg" alt="" width="15">
                     </router-link>
-                   <button class=" border-0  bg-white " type="button" @click="deleteProduct(product.id)">
+                   <button class=" border-0  bg-white " type="button" @click="deleteProduct(product.id, i)">
                        <img src="../../public/svg/delete.svg" alt="" width="15" class="me-2" >
                    </button> 
                 </div>
@@ -31,19 +31,11 @@ export default {
     props: ['inventory', 'removeInv'],
     
     methods: {
-        deleteProduct (id) {
+        deleteProduct (id, i) {
             ProductDataService.delete(id)
                 .then(() => {
-                    this.removeInv(this.productIndex)
+                    this.removeInv(i)
                 })
-        }
-    },
-    computed: {
-        productIndex () {
-            const index = this.inventory.findIndex((p) => {
-                return p.id === this.id
-            })
-            return index
         }
     },
     mounted () {
